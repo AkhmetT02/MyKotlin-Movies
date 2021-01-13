@@ -10,17 +10,30 @@
         android:layout_height="match_parent"
         tools:context=".screens.detailScreen.DetailActivity">
 
-        <ImageView
-            android:id="@+id/detail_big_poster_iv"
+        <RelativeLayout
+            android:id="@+id/relative_poster_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            android:adjustViewBounds="true"/>
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/detail_big_poster_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_launcher_foreground"/>
+            <ImageView
+                android:id="@+id/favourite_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_not_favourite"/>
+        </RelativeLayout>
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/detail_guid_line"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detail_big_poster_iv"
+            app:layout_constraintTop_toBottomOf="@id/relative_poster_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintGuide_percent="0.4"
             android:orientation="vertical"/>
@@ -30,7 +43,7 @@
             android:id="@+id/title_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detail_big_poster_iv"
+            app:layout_constraintTop_toBottomOf="@id/relative_poster_layout"
             app:layout_constraintStart_toStartOf="parent"
             android:text="Title:"
             android:textSize="18dp"/>
@@ -38,7 +51,7 @@
             android:id="@+id/detail_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detail_big_poster_iv"
+            app:layout_constraintTop_toBottomOf="@id/relative_poster_layout"
             app:layout_constraintStart_toStartOf="@id/detail_guid_line"
             android:textSize="18dp"/>
 

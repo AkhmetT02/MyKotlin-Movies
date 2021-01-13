@@ -3,7 +3,10 @@ package com.example.mykotlinmovies.screens.detailScreen
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mykotlinmovies.R
 import com.example.mykotlinmovies.adapter.MovieAdapter
@@ -11,6 +14,7 @@ import com.example.mykotlinmovies.adapter.MovieAdapter.Companion.BASE_POSTER_URL
 import com.example.mykotlinmovies.adapter.MovieAdapter.Companion.BIG_POSTER_SIZE
 import com.example.mykotlinmovies.adapter.ReviewAdapter
 import com.example.mykotlinmovies.adapter.VideoAdapter
+import com.example.mykotlinmovies.database.DatabaseViewModel
 import com.example.mykotlinmovies.pojo.Result
 import com.example.mykotlinmovies.pojo.Review
 import com.example.mykotlinmovies.pojo.Video
@@ -26,6 +30,8 @@ class DetailActivity : AppCompatActivity(), DetailListView {
     private val BASE_YOUTUBE_URL = "https://www.youtube.com/watch?v="
     private lateinit var presenter: DetailPresenter
 
+    private val viewModel: DatabaseViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -36,6 +42,7 @@ class DetailActivity : AppCompatActivity(), DetailListView {
         val movie = intent.getParcelableExtra<Result>("movie")
 
         presenter = DetailPresenter(this)
+
 
         detail_title_tv.text = movie?.title
         detail_original_title_tv.text = movie?.original_title
@@ -90,4 +97,5 @@ class DetailActivity : AppCompatActivity(), DetailListView {
     override fun showReview(reviews: List<Review>) {
         reviewAdapter.reviews = reviews as ArrayList<Review>
     }
+
 }

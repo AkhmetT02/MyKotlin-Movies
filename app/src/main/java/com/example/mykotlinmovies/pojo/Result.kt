@@ -1,13 +1,18 @@
 package com.example.mykotlinmovies.pojo
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
+@Entity(tableName = "movies")
 @Parcelize
 data class Result(
+        @PrimaryKey(autoGenerate = true)
+        val uniqueId: Int,
         val adult: Boolean,
         val backdrop_path: String?,
-        val genre_ids: List<Int>,
+//        val genre_ids: List<Int>,
         val id: Int,
         val original_language: String?,
         val original_title: String?,
