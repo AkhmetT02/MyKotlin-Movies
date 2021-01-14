@@ -25,4 +25,7 @@ interface RetrofitServices {
 
     @GET("3/movie/{movieId}")
     fun getMovieById(@Path("movieId") movieId: Int, @Query("api_key") apiKey: String) : Call<Result>
+
+    @GET("3/search/movie")
+    fun getSearchedMoviesList(@Query("api_key") apiKey: String, @Query("query") queryStr: String) : Call<Movie>
 }

@@ -9,11 +9,11 @@ import retrofit2.Response
 
 class MainPresenter(private val view: MainListView) {
 
-    private lateinit var mService: RetrofitServices
+    private val mService: RetrofitServices = Common.getRetrofitService
     val API_KEY: String = "26c9c63599343ed01a5489135d890a5e"
 
     fun getData(page: Int){
-        mService = Common.getRetrofitService
+
         mService.getMoviesList(API_KEY, page).enqueue(object: Callback<Movie> {
             override fun onFailure(call: Call<Movie>, t: Throwable) {
                 view.showError()
@@ -24,5 +24,19 @@ class MainPresenter(private val view: MainListView) {
 //                Log.i("RESPONSE_MOVIES_LENGTH", movies.size.toString())
             }
         })
+    }
+
+    fun getSearchedMovies(queryStr: String?){
+        if (queryStr != null) {
+            mService.getSearchedMoviesList(API_KEY, queryStr).enqueue(object: Callback<Movie> {
+                override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                    view.showSearchedData(response.body()?.results)
+                }
+
+                override fun onFailure(call: Call<Movie>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+            })
+        }
     }
 }
