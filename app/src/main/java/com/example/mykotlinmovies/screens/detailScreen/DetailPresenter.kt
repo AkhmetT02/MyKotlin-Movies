@@ -2,10 +2,12 @@ package com.example.mykotlinmovies.screens.detailScreen
 
 import com.example.mykotlinmovies.client.Common
 import com.example.mykotlinmovies.client.RetrofitServices
+import com.example.mykotlinmovies.database.DatabaseViewModel
 import com.example.mykotlinmovies.pojo.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.activity.viewModels
 
 class DetailPresenter(private val view: DetailListView) {
 
@@ -13,7 +15,7 @@ class DetailPresenter(private val view: DetailListView) {
     val API_KEY: String = "26c9c63599343ed01a5489135d890a5e"
 
 
-    fun getVideos(movieId: Int){
+    fun getData(movieId: Int){
         mServices = Common.getRetrofitService
         mServices.getVideosList(movieId, API_KEY).enqueue(object: Callback<VideoResult> {
             override fun onResponse(call: Call<VideoResult>, response: Response<VideoResult>) {
@@ -42,5 +44,17 @@ class DetailPresenter(private val view: DetailListView) {
 
             }
         })
+
+        mServices.getMovieById(movieId, API_KEY).enqueue(object: Callback<Result>{
+            override fun onResponse(call: Call<Result>, response: Response<Result>) {
+                response.body()?.let { view.showMovie(it) }
+            }
+
+            override fun onFailure(call: Call<Result>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+
+
     }
 }

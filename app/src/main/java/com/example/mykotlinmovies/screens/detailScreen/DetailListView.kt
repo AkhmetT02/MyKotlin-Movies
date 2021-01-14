@@ -8,4 +8,7 @@ interface DetailListView {
     fun showSimilarMovie(similarMovies: List<Result>)
     fun showVideo(videos: List<Video>)
     fun showReview(reviews: List<Review>)
+
+    fun showMovie(movie: Result)
+    fun showFavourite(isFavourite: Boolean)
 }

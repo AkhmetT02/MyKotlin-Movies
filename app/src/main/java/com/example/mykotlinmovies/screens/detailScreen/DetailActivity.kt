@@ -3,10 +3,10 @@ package com.example.mykotlinmovies.screens.detailScreen
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mykotlinmovies.R
 import com.example.mykotlinmovies.adapter.MovieAdapter
@@ -27,6 +27,8 @@ class DetailActivity : AppCompatActivity(), DetailListView {
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var reviewAdapter: ReviewAdapter
 
+    private lateinit var movie: Result
+
     private val BASE_YOUTUBE_URL = "https://www.youtube.com/watch?v="
     private lateinit var presenter: DetailPresenter
 
@@ -36,23 +38,13 @@ class DetailActivity : AppCompatActivity(), DetailListView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        if (!intent.hasExtra("movie")){
+        if (!intent.hasExtra("movieId")){
             finish()
         }
-        val movie = intent.getParcelableExtra<Result>("movie")
+        val movieId = intent.getIntExtra("movieId", -1)
 
         presenter = DetailPresenter(this)
 
-
-        detail_title_tv.text = movie?.title
-        detail_original_title_tv.text = movie?.original_title
-        detail_original_language_tv.text = movie?.original_language
-        detail_popularity_tv.text = movie?.popularity.toString()
-        detail_vote_average_tv.text = movie?.vote_average.toString()
-        detail_release_date_tv.text = movie?.release_date
-        detail_overview_tv.text = movie?.overview
-
-        Picasso.get().load(BASE_POSTER_URL + BIG_POSTER_SIZE + movie?.poster_path).into(detail_big_poster_iv)
 
 
         videoAdapter = VideoAdapter()
@@ -77,13 +69,52 @@ class DetailActivity : AppCompatActivity(), DetailListView {
         movieAdapter.setOnPosterClickListener(object: MovieAdapter.OnPosterClickListener{
             override fun onPosterClick(position: Int) {
                 val intent = Intent(baseContext, DetailActivity::class.java)
-                intent.putExtra("movie", movieAdapter.movies[position])
+                intent.putExtra("movie", movieAdapter.movies[position].id)
                 startActivity(intent)
             }
         })
 
-        presenter.getVideos(movie?.id!!)
 
+        presenter.getData(movieId)
+
+        if(viewModel.getMovieById(movieId) != null){
+            favourite_iv.visibility = View.VISIBLE
+        } else {
+            not_favourite_iv.visibility = View.VISIBLE
+        }
+
+        favourite_iv.setOnClickListener {
+            viewModel.deleteMovie(movie.id)
+            favourite_iv.visibility = View.INVISIBLE
+            not_favourite_iv.visibility = View.VISIBLE
+        }
+        not_favourite_iv.setOnClickListener {
+            viewModel.insertMovie(movie)
+            not_favourite_iv.visibility = View.INVISIBLE
+            favourite_iv.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setDetails(){
+
+        detail_title_tv.text = movie.title
+        detail_original_title_tv.text = movie.original_title
+        detail_original_language_tv.text = movie.original_language
+        detail_popularity_tv.text = movie.popularity.toString()
+        detail_vote_average_tv.text = movie.vote_average.toString()
+        detail_release_date_tv.text = movie.release_date
+        detail_overview_tv.text = movie.overview
+
+        Picasso.get().load(BASE_POSTER_URL + BIG_POSTER_SIZE + movie.poster_path).into(detail_big_poster_iv)
+    }
+
+    override fun showMovie(movie: Result) {
+        this.movie = movie
+        setDetails()
+    }
+
+    override fun showFavourite(isFavourite: Boolean) {
+        TODO("Not yet implemented")
     }
 
     override fun showSimilarMovie(similarMovies: List<Result>) {

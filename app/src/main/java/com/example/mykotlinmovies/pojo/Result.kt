@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "movies")
-@Parcelize
 data class Result(
         @PrimaryKey(autoGenerate = true)
         val uniqueId: Int,
@@ -24,4 +23,4 @@ data class Result(
         val video: Boolean,
         val vote_average: Double,
         val vote_count: Int
-) :Parcelable
+)

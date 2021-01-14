@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyKotlinMovies"
         android:usesCleartextTraffic="true">
-        <activity android:name=".screens.detailScreen.DetailActivity"></activity>
+        <activity android:name=".screens.favouriteScreen.FavouriteMoviesActivity"></activity>
+        <activity android:name=".screens.detailScreen.DetailActivity" />
         <activity android:name=".screens.mainScreen.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

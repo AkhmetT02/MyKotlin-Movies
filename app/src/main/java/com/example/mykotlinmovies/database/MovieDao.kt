@@ -16,8 +16,8 @@ interface MovieDao {
     @Query("SELECT * FROM movies WHERE id = :id")
     fun getMovieById(id: Int) : Result
 
-    @Delete
-    fun deleteMovie(result: Result)
+    @Query("DELETE FROM movies WHERE id = :id")
+    fun deleteMovie(id: Int)
 
     @Insert
     fun insertMovie(result: Result)

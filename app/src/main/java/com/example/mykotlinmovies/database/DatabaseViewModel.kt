@@ -20,13 +20,13 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun getMovieById(id: Int) : Result{
-        return MovieDatabase.databaseWriteExecutor.submit(GetMovieByIdCallable(id)).get()
+    fun getMovieById(id: Int) : Result?{
+        return MovieDatabase.databaseWriteExecutor.submit(GetMovieByIdCallable(id))?.get()
     }
 
-    fun deleteMovie(result: Result){
+    fun deleteMovie(id: Int){
         MovieDatabase.databaseWriteExecutor.execute {
-            database.getMovieDao().deleteMovie(result)
+            database.getMovieDao().deleteMovie(id)
         }
     }
 

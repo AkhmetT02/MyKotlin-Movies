@@ -2,13 +2,16 @@ package com.example.mykotlinmovies.screens.mainScreen
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mykotlinmovies.R
 import com.example.mykotlinmovies.adapter.MovieAdapter
 import com.example.mykotlinmovies.pojo.Result
 import com.example.mykotlinmovies.screens.detailScreen.DetailActivity
+import com.example.mykotlinmovies.screens.favouriteScreen.FavouriteMoviesActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainListView {
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity(), MainListView {
         adapter.setOnPosterClickListener(object: MovieAdapter.OnPosterClickListener{
             override fun onPosterClick(position: Int) {
                 val intent = Intent(baseContext, DetailActivity::class.java)
-                intent.putExtra("movie", adapter.movies[position])
+                intent.putExtra("movieId", adapter.movies[position].id)
                 startActivity(intent)
             }
         })
@@ -52,5 +55,18 @@ class MainActivity : AppCompatActivity(), MainListView {
 
     override fun showError() {
         Toast.makeText(this, "Load error!", Toast.LENGTH_SHORT)
+    }
+
+    fun onMenuClick(view: View){
+        drawer_layout.openDrawer(GravityCompat.START)
+    }
+    fun onHomeClick(view: View){
+        recreate()
+        drawer_layout.closeDrawer(GravityCompat.START)
+    }
+    fun onFavouriteMoviesClick(view: View){
+        val intent = Intent(this, FavouriteMoviesActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

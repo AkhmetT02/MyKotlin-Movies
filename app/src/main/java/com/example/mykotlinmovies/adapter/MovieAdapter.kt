@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mykotlinmovies.screens.mainScreen.MainActivity
 import com.example.mykotlinmovies.R
 import com.example.mykotlinmovies.pojo.Result
+import com.example.mykotlinmovies.screens.favouriteScreen.FavouriteMoviesActivity
 import com.squareup.picasso.Picasso
 
 class MovieAdapter(private val activity: Activity) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
@@ -63,7 +64,7 @@ class MovieAdapter(private val activity: Activity) : RecyclerView.Adapter<MovieA
         }
 
         val movie: Result = movies[position]
-        if (activity is MainActivity) {
+        if (activity is MainActivity || activity is FavouriteMoviesActivity) {
             Picasso.get().load(BASE_POSTER_URL + POSTER_SIZE + movie.poster_path)
                 .into(holder.poster)
         } else{
