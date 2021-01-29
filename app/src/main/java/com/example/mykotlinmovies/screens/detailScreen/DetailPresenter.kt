@@ -1,5 +1,6 @@
 package com.example.mykotlinmovies.screens.detailScreen
 
+import android.util.Log
 import com.example.mykotlinmovies.client.Common
 import com.example.mykotlinmovies.client.RetrofitServices
 import com.example.mykotlinmovies.database.DatabaseViewModel
@@ -19,6 +20,7 @@ class DetailPresenter(private val view: DetailListView) {
         mServices = Common.getRetrofitService
         mServices.getVideosList(movieId, API_KEY).enqueue(object: Callback<VideoResult> {
             override fun onResponse(call: Call<VideoResult>, response: Response<VideoResult>) {
+                Log.i("ResponseTAG", movieId.toString() + "ASDASDASD")
                 view.showVideo(response.body()?.results as ArrayList<Video>)
             }
 

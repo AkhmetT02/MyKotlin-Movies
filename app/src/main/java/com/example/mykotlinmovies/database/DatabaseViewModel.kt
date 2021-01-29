@@ -5,34 +5,29 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.mykotlinmovies.pojo.Result
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.Callable
 import java.util.concurrent.Future
+import kotlin.properties.Delegates
 
 class DatabaseViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = MovieDatabase.getDatabase(application)
     val movies = database.getMovieDao().getAllMovies()
 
-    fun insertMovie(result: Result){
-        MovieDatabase.databaseWriteExecutor.execute {
-            database.getMovieDao().insertMovie(result)
-            Log.i("InsertTag", "HEYYYYY")
-        }
+    fun insertMovie(result: Result) = CoroutineScope(Dispatchers.Default).launch{
+        database.getMovieDao().insertMovie(result)
     }
 
-    fun getMovieById(id: Int) : Result?{
-        return MovieDatabase.databaseWriteExecutor.submit(GetMovieByIdCallable(id))?.get()
+    suspend fun getMovieById(id: Int) : Result = withContext(Dispatchers.IO){
+        database.getMovieDao().getMovieById(id)
     }
 
-    fun deleteMovie(id: Int){
-        MovieDatabase.databaseWriteExecutor.execute {
-            database.getMovieDao().deleteMovie(id)
-        }
-    }
 
-    inner class GetMovieByIdCallable(private val id: Int) : Callable<Result>{
-        override fun call(): Result {
-            return database.getMovieDao().getMovieById(id)
-        }
+    fun deleteMovie(id: Int) = CoroutineScope(Dispatchers.IO).launch{
+        database.getMovieDao().deleteMovie(id)
     }
 }

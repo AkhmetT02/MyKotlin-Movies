@@ -20,6 +20,9 @@ import com.example.mykotlinmovies.pojo.Review
 import com.example.mykotlinmovies.pojo.Video
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity(), DetailListView {
 
@@ -69,7 +72,7 @@ class DetailActivity : AppCompatActivity(), DetailListView {
         movieAdapter.setOnPosterClickListener(object: MovieAdapter.OnPosterClickListener{
             override fun onPosterClick(position: Int) {
                 val intent = Intent(baseContext, DetailActivity::class.java)
-                intent.putExtra("movie", movieAdapter.movies[position].id)
+                intent.putExtra("movieId", movieAdapter.movies[position].id)
                 startActivity(intent)
             }
         })
@@ -77,10 +80,12 @@ class DetailActivity : AppCompatActivity(), DetailListView {
 
         presenter.getData(movieId)
 
-        if(viewModel.getMovieById(movieId) != null){
-            favourite_iv.visibility = View.VISIBLE
-        } else {
-            not_favourite_iv.visibility = View.VISIBLE
+        CoroutineScope(Dispatchers.IO).launch {
+            if (viewModel.getMovieById(movieId) != null) {
+                favourite_iv.visibility = View.VISIBLE
+            } else {
+                not_favourite_iv.visibility = View.VISIBLE
+            }
         }
 
         favourite_iv.setOnClickListener {

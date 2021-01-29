@@ -18,22 +18,16 @@ abstract class MovieDatabase : RoomDatabase() {
 
         private var database: MovieDatabase? = null
         private const val DB_NAME = "movies.db"
-        private val LOCK = ReentrantLock()
-
-        private const val THREAD_COUNT = 4
-        val databaseWriteExecutor = Executors.newFixedThreadPool(THREAD_COUNT)
 
         fun getDatabase(context: Context): MovieDatabase {
-//            synchronized(LOCK) {
-                if (database == null) {
-                    database = Room.databaseBuilder(context, MovieDatabase::class.java, DB_NAME)
-                        .fallbackToDestructiveMigration()
-                        .build()
-                }
-//            }
+            if (database == null) {
+                database = Room.databaseBuilder(context, MovieDatabase::class.java, DB_NAME)
+                    .fallbackToDestructiveMigration()
+                    .build()
+            }
             return database!!
         }
     }
 
-    abstract fun getMovieDao() : MovieDao
+    abstract fun getMovieDao(): MovieDao
 }

@@ -21,7 +21,6 @@ class MainPresenter(private val view: MainListView) {
 
             override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
                 view.showData(response.body()?.results)
-//                Log.i("RESPONSE_MOVIES_LENGTH", movies.size.toString())
             }
         })
     }
